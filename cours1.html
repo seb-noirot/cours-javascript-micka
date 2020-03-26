@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <style>
+    table, th, td {
+    padding: 10px;
+    border: 1px solid black;
+    border-collapse: collapse;
+    }
+  </style>
+</head>
+<body>
+
+  <p id="equation"></p>
+  <table>
+    <tr>
+      <td><button onclick="clique('1')">1</button></td>
+      <td><button onclick="clique('2')">2</button></td>
+      <td><button onclick="clique('3')">3</button></td>
+      <td><button onclick="action('+')">+</button></td>
+    </tr>
+    <tr>
+      <td><button onclick="clique('4')">4</button></td>
+      <td><button onclick="clique('5')">5</button></td>
+      <td><button onclick="clique('6')">6</button></td>
+      <td><button onclick="action('-')">-</button></td>
+    </tr>
+    <tr>
+      <td><button onclick="clique('7')">7</button></td>
+      <td><button onclick="clique('8')">8</button></td>
+      <td><button onclick="clique('9')">9</button></td>
+      <td><button onclick="action('*')">*</button></td>
+    </tr>
+    <tr>
+      <td><button onclick="clique('0')">0</button></td>
+      <td><button onclick="action('/')">/</button></td>
+      <td><button onclick="calcule(variable1,variable2, operation)">=</button></td>
+      <td><button onclick="reset()">AC</button></td>
+    </tr>
+  </table>
+
+  <button onclick="demanderValeur1()">Saisir valeur 1</button>
+  <button onclick="demanderAction()">Saisir action</button>
+  <button onclick="demanderValeur2()">Saisir valeur 2</button>
+  <button onclick="calculerResultat(valeur1, valeur2, operation2)">Calculer</button>
+  <p id="equation2"></p>
+
+  <button onclick="faireUneOperation()">Fais des maths</button>
+ <script>
+   // calculer le resultat de variable1 "action" variable2;
+   // 2 + 3
+   let variable1 = "";
+   let variable2 = "";
+   let operation = "";
+
+   let valeur1 = "";
+   let valeur2 = "";
+   let operation2 = "";
+    function faireUneOperation() {
+      demanderValeur1();
+      demanderAction();
+      demanderValeur2();
+      calculerResultat(valeur1, valeur2, operation2);
+    }
+   function demanderValeur1() {
+    do {
+      valeur1 = prompt("entrer la premiere valeur");
+     } while (isNaN(valeur1))
+     ecrireEquation2();
+   }
+
+   function demanderValeur2() {
+     do {
+      valeur2 = prompt("entrer la deuxieme valeur");
+     } while (isNaN(valeur2))
+     ecrireEquation2();
+   }
+
+   function demanderAction() {
+    do {
+      operation2 = prompt("Que veux tu faire?");
+     } while (operation2 != "+")
+     ecrireEquation2();
+   }
+
+  function clique(valeur){
+    if (!operation) {
+      variable1 = variable1 + valeur;
+    } else {
+      variable2 = variable2 + valeur;
+    }
+    ecrireEquation();
+  }
+
+  function action(valeur) {
+    operation = valeur;
+    ecrireEquation();
+  }
+
+  function reset() {
+    variable1 = "";
+    variable2 = "";
+    operation = "";
+    ecrireEquation();
+  }
+
+  function calculerResultat(v1, v2, op) {
+    let resultat = 0;
+    switch(op){
+      case "+":
+        resultat = Number(v1) + Number(v2);
+        break;
+      case "-":
+        resultat = Number(v1) - Number(v2);
+        break;
+      case "*":
+        resultat = Number(v1) * Number(v2);
+        break;
+      case "/":
+        resultat = Number(v1) / Number(v2);
+      break;
+      default:
+        alert("Que veux tu faire?");
+        return;
+    }
+    document.getElementById("equation2").innerHTML = `${v1} ${op} ${v2} = ${resultat}`
+  }
+
+  function calcule(v1, v2, op) {
+    let resultat = 0;
+    switch(op){
+      case "+":
+        resultat = Number(v1) + Number(v2);
+        break;
+      case "-":
+        resultat = Number(v1) - Number(v2);
+        break;
+      case "*":
+        resultat = Number(v1) * Number(v2);
+        break;
+      case "/":
+        resultat = Number(v1) / Number(v2);
+      break;
+      default:
+        alert("Que veux tu faire?");
+        return;
+    }
+    document.getElementById("equation").innerHTML = `${variable1} ${operation} ${variable2} = ${resultat}`
+  }
+
+  function ecrireEquation() {
+    document.getElementById("equation").innerHTML = `${variable1} ${operation} ${variable2} `
+  }
+
+  function ecrireEquation2() {
+    document.getElementById("equation2").innerHTML = `${valeur1} ${operation2} ${valeur2} `
+  }
+  
+ </script>
+</body>
+
+</html>
