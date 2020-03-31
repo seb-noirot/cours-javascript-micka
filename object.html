@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <style>
+    table, th, td {
+    padding: 10px;
+    border: 1px solid black;
+    border-collapse: collapse;
+    }
+  </style>
+</head>
+<body>
+
+  <button onclick="modifierNom()">Modifier Nom</button>
+  <button onclick="modifierTelephone()">Modifier telephone</button>
+  <button onclick="modifier()">Modifier</button>
+  <button onclick="modifierAdresse()">Modifier Adresse</button>
+  <button onclick="ajouterChiens()">Ajouter chiens</button>
+  <p id="annuaireId"></p>
+ <script>
+    let personne = {
+      nom : "",
+      telephone : "",
+      propriete : "",
+      adresse : {
+        rue: "",
+        numeroDeRue : "",
+        codePostal : "",
+        ville : ""
+      },
+      chiens : []
+    }
+
+    function ajouterChiens() {
+      let nom = prompt("Quel est son nom");
+      personne.chiens.push(nom);
+      ecrire();
+    }
+    function modifierAdresse() {
+      let rue = prompt("Quel est la rue", personne.adresse.rue);
+      let numeroDeRue = prompt("Quel est le numero de rue", personne.adresse.numeroDeRue);
+      let codePostal = prompt("Quel est le code postal", personne.adresse.codePostal);
+      let ville = prompt("Quel est la ville", personne.adresse.ville);
+
+      personne.adresse = {
+        rue: rue,
+        numeroDeRue : numeroDeRue,
+        codePostal : codePostal,
+        ville : ville
+      }
+
+      personne.adresse.rue = rue;
+      personne.adresse.numeroDeRue = numeroDeRue;
+      personne.adresse.codePostal = codePostal;
+      personne.adresse.ville = ville;
+
+      ecrire();
+    }
+
+    function modifierNom() {
+      let valeur = prompt("Quel est son nom");
+      personne.nom = valeur;
+      ecrire();
+    }
+
+    function modifierTelephone() {
+      let valeur = prompt("Quel est son telephone");
+      personne.telephone = valeur;
+      ecrire();
+    }
+
+    function modifier() {
+      let proprieteChoisi = prompt("Quoi ?"); // "adresse"
+      let valeur = prompt(`Valeur de ${proprieteChoisi} ?`);
+      personne[proprieteChoisi] = valeur;
+      ecrire();
+    }
+
+    function ecrire() {
+      document.getElementById("annuaireId").innerText = JSON.stringify(personne);
+    }
+
+    ecrire();
+ </script>
+</body>
+
+</html>

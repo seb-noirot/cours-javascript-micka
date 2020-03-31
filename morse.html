@@ -11,6 +11,16 @@
 </head>
 <body>
 
+  <button onclick="clique('A')">A</button>
+  <button onclick="clique('B')">B</button>
+  <button onclick="clique('C')">C</button>
+  <button onclick="clique('D')">D</button>
+  <button onclick="clique('E')">E</button>
+  <button onclick="clique('SPACE')">SPACE</button>
+  <button onclick="reset()">RESET</button>
+
+  <p id="phrase"></p>
+  <p id="traduction"></p>
  <script>
      // Un clavier avec des bouttons de "A" a "E" et un bouton "Espace" et un bouton "Reset"
      // Quand je clique sur un boutton, ca m'affiche le code morse du boutton
@@ -24,13 +34,62 @@
      // Espace entre 2 mots : y
 
      // une variable globale : francais qui va etre ABCD ABC
+     let variablePhrase = "";
      // une variable globale : traduction qui va etre .___x..y__x.._
+     let variableTraduction = "";
      // une fonction morse avec un parametre qui va etre la lettre A, B, C, ...
      //    switch
      // une fonction espace qui va ajouter le x
      // une fonction reset qui va supprimer la variable globale
      // a chaque fois qu'on appuie sur une touche, ca mets a jour un text qui affiche:
+     function clique(valeur){
+       let valeurPhrase = valeur;
+       let valeurTraduite = "";
+       switch (valeur){
+         case "A":
+         valeurTraduite = "._";
+         break;
+         case "B":
+         valeurTraduite = "_...";
+         break;
+         case "C":
+         valeurTraduite = "_._.";
+         break;
+         case "D":
+         valeurTraduite = "_..";
+         break;
+         case "E":
+         valeurTraduite = ".";
+         break;
+         case "SPACE":
+         valeurTraduite = "y";
+         valeurPhrase = " ";
+         break;
+        default:
+       }
+
+       if (variableTraduction) {
+        variableTraduction = variableTraduction + "x";
+       }
+
+       variableTraduction = variableTraduction + valeurTraduite;
+       variablePhrase = variablePhrase + valeurPhrase;
+      ecrire();
+     }
      // francais : traduction
+     function ecrire() {
+        document.getElementById("phrase").innerText = variablePhrase;
+       document.getElementById("traduction").innerText = variableTraduction;
+     }
+
+     function reset() {
+      variableTraduction = "";
+      variablePhrase = "";
+      ecrire();
+
+     }
+     
+     
  </script>
 </body>
 
