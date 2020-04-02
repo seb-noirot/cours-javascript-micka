@@ -11,25 +11,77 @@
 </head>
 <body>
 
+  <button onclick="definirProprio()">Definir Proprietaire</button>
+  <button onclick="definirAdresse()">Definir Adresse</button>
+  <button onclick="ajouterPatient()">Ajouter patient</button>
+  <button onclick="prendreReservation()">Prendre reservation</button>
+  
+  <h3>Mon cabinet</h3>
+  <h4>Le proprio</h4>
+  <p id="proprio"></p>
+  <h4>L'adresse</h4>
+  <p id="adresse"></p>
+  <h4>Les patients</h4>
+  <p id="patients"></p>
+  <h4>Les reservations</h4>
+  <p id="reservations"></p>
+
  <script>
     // Systeme de reservation
     // Object qui s´appelle cabinet
     // qui a par defaut 
+    let cabinet = {
     //  - un object proprietaire (nom, prenom) {}
+      proprietaire : {},
     //  - un object adresse (rue, numero de rue, ville, code postal) {}
+      adresse : {},
     //  - une liste d´objet patient (nom, prenom, age, sexe) : [] push
+     patients : [],
     //  - une liste de reservation (nom du patient, heure) : [] push
-
+      reservations : []
+    }
     // Bouton 1 : changer le proprietaire
+    function definirProprio() {
+      let valeurNom = prompt("Nom du proprietaire?");
+      cabinet.proprietaire.nom = valeurNom;
+      afficher();
+    }
     // Bouton 2 : changer l´adresse
+    function definirAdresse() {
+      let valeurRue = prompt("Rue du cabinet?");
+      cabinet.adresse.rue = valeurRue;
+      afficher();
+    }
     // Bouton 3 : ajouter un patient
+    function ajouterPatient() {
+      let valeurNom = prompt("Nom du patient?");
+      let patient = {};
+      patient.nom = valeurNom;
+      cabinet.patients.push(patient);
+      afficher();
+    }
     // Bouton 4 : ajouter une reservation
+    function prendreReservation() {
+      let valeurNom = prompt("Nom du patient?");
+      let valeurJour = prompt("Jour de la reservation?");
+      let reservation = {};
+      reservation.nomPatient = valeurNom;
+      reservation.jour = valeurJour;
+      cabinet.reservations.push(reservation);
+      afficher();
+    }
 
+    function afficher() {
     // Affichage : JSON.stringify(personne)
     // p : proprietaire
+    document.getElementById("proprio").innerText = JSON.stringify(cabinet.proprietaire);
     // p : adresse
+    document.getElementById("adresse").innerText = JSON.stringify(cabinet.adresse);
     // p : patients
+    document.getElementById("patients").innerText = JSON.stringify(cabinet.patients);
     // p : reservation
+    document.getElementById("reservations").innerText = JSON.stringify(cabinet.reservations);
+    }
  </script>
 </body>
 
