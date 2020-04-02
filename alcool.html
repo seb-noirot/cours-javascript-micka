@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <style>
+    thead,
+tfoot {
+    background-color: #3f87a6;
+    color: #fff;
+}
+
+tbody {
+    background-color: #e4f0f5;
+}
+
+caption {
+    padding: 10px;
+    caption-side: bottom;
+}
+
+table {
+    border-collapse: collapse;
+    border: 2px solid rgb(200, 200, 200);
+    letter-spacing: 1px;
+    font-family: sans-serif;
+    font-size: .8rem;
+}
+
+td,
+th {
+    border: 1px solid rgb(190, 190, 190);
+    padding: 5px 10px;
+}
+
+td {
+    text-align: center;
+}
+  </style>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Boisson</th>
+                <th>Alcool</th>
+                <th>Volume</th>
+                <th>Heure</th>
+            </tr>
+        </thead>
+        <tbody id="boissons">
+
+        </tbody>
+    </table>
+
+    <table id="matrice">
+    </table>
+ <script>
+    // Ma consommation d´alcool
+    // une variable globale mes_boissons
+    // tableau (liste) qui contient les boissons que j´ai bues
+    let id = 0;
+    let mes_boissons = [];
+    mes_boissons.push({id: id++, nom : "biere", degres: 5, volume : 50, heure : "12h20"});
+    mes_boissons.push({id: id++, nom : "vin", degres: 12, volume : 12.5, heure : "13h00"});
+    // [{nom : biere},{nom : vin}...]
+    // une boisson est un objet :
+    //  - id
+    //  - nom
+    //  - un degres 
+    //  - un volume
+    //  - une heure (12h20)
+
+    // Un bouton pour ajouter une boisson
+    // afficher ces boissons sur la page
+    // Un bouton pour supprimer une boisson car je l´ai renversée car je suis super saoul
+    // mes_boissons.pop() : supprimer le dernier element du tableau
+    // Un bouton pour j´ai digeré le verre le plus ancien
+    // mes_boissons.shift() : supprimer le premier element du tableau
+
+    // Methode d'affichage
+    // On va creer un tableau
+    function afficherValeurs() {
+        // ;
+        let nouveauHTML = "";
+        mes_boissons.forEach(function(boisson, index){
+            // function({nom:biere,....}, 0);
+            // function({nom:vin,....}, 1);
+            // <tr>
+            let tr = document.createElement("tr");
+            nouveauHTML = nouveauHTML + "<tr>";
+            // <td>1</td>
+            nouveauHTML = nouveauHTML + "<td>" + boisson.id + "</td>";
+            // <td>Biere</td>
+            nouveauHTML = nouveauHTML + "<td>" + boisson.nom + "</td>";
+            // <td>5</td>
+            nouveauHTML = nouveauHTML + "<td>" + boisson.degres + "</td>";
+            // <td>50</td>
+            nouveauHTML = nouveauHTML + "<td>" + boisson.volume + "</td>";
+            // <td>12h20</td>
+            nouveauHTML = nouveauHTML + "<td>" + boisson.heure + "</td>";
+            // </tr>
+            nouveauHTML = nouveauHTML + "</tr>";
+        })
+        document.getElementById("boissons").innerHTML = nouveauHTML;
+    }
+
+    afficherValeurs();
+
+ </script>
+</body>
+
+</html>
