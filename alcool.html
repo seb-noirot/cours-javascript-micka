@@ -40,11 +40,13 @@ td {
     <table>
         <thead>
             <tr>
+                <th>Index</th>
                 <th>ID</th>
                 <th>Boisson</th>
                 <th>Alcool</th>
                 <th>Volume</th>
                 <th>Heure</th>
+                <th colspan="2">Actions</th>
             </tr>
         </thead>
         <tbody id="boissons">
@@ -52,8 +54,7 @@ td {
         </tbody>
     </table>
 
-    <table id="matrice">
-    </table>
+    <button onclick="glouglou()">Boire</button>
  <script>
     // Ma consommation d´alcool
     // une variable globale mes_boissons
@@ -70,17 +71,26 @@ td {
     //  - un volume
     //  - une heure (12h20)
 
+    function glouglou() {
+        let nom = prompt("Nom?");
+        let degres = prompt("Degres?");
+        let volume = prompt("Volume ?");
+        let heure = prompt("Heure?");
+        
+        mes_boissons.push({id : id++, nom : nom, degres : degres, volume: volume, heure: heure});
+        afficherValeurs();
+    }
+
     // Un bouton pour ajouter une boisson
     // afficher ces boissons sur la page
     // Un bouton pour supprimer une boisson car je l´ai renversée car je suis super saoul
     // mes_boissons.pop() : supprimer le dernier element du tableau
     // Un bouton pour j´ai digeré le verre le plus ancien
     // mes_boissons.shift() : supprimer le premier element du tableau
-
+    
     // Methode d'affichage
     // On va creer un tableau
     function afficherValeurs() {
-        // ;
         let nouveauHTML = "";
         mes_boissons.forEach(function(boisson, index){
             // function({nom:biere,....}, 0);
@@ -88,6 +98,8 @@ td {
             // <tr>
             let tr = document.createElement("tr");
             nouveauHTML = nouveauHTML + "<tr>";
+            // <td>1</td>
+            nouveauHTML = nouveauHTML + "<td>" + index + "</td>";
             // <td>1</td>
             nouveauHTML = nouveauHTML + "<td>" + boisson.id + "</td>";
             // <td>Biere</td>
@@ -98,10 +110,43 @@ td {
             nouveauHTML = nouveauHTML + "<td>" + boisson.volume + "</td>";
             // <td>12h20</td>
             nouveauHTML = nouveauHTML + "<td>" + boisson.heure + "</td>";
+            // <td><button>Modifier</button></td>
+            nouveauHTML = nouveauHTML + "<td><button onclick='modifier(" + boisson.id + ")'>Modifier</td>";
+            // <td><button>Supprimer</button></td>
+            nouveauHTML = nouveauHTML + "<td><button onclick='supprimer(" + boisson.id + ")'>Supprimer</td>";
             // </tr>
             nouveauHTML = nouveauHTML + "</tr>";
         })
         document.getElementById("boissons").innerHTML = nouveauHTML;
+    }
+
+    function modifier(id) {
+        let indexAModifier = indexDeLaBoissonAvecId(id);
+    
+        let maBoissonAIndex = mes_boissons[indexAModifier];
+        let nom = prompt("Nom?", maBoissonAIndex.nom);
+        let degres = prompt("Degres?", maBoissonAIndex.degres);
+        let volume = prompt("Volume ?", maBoissonAIndex.volume);
+        let heure = prompt("Heure?", maBoissonAIndex.heure);
+        
+        mes_boissons[indexAModifier] = {id : maBoissonAIndex.id, nom : nom, degres : degres, volume: volume, heure: heure};
+        afficherValeurs();
+    }
+
+    function supprimer(id) {
+        let indexASupprimer = indexDeLaBoissonAvecId(id);
+        mes_boissons.splice(indexASupprimer, 1);
+        afficherValeurs();
+    }
+
+    function indexDeLaBoissonAvecId(id){
+        let indexDeLaBoisson = -1;
+        mes_boissons.forEach(function(uneBoisson, index){
+            if (uneBoisson.id === id) {
+                indexDeLaBoisson = index;
+            }
+        })
+        return indexDeLaBoisson;
     }
 
     afficherValeurs();
