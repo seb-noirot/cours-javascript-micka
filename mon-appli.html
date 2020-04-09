@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <style>
+    thead,
+tfoot {
+    background-color: #3f87a6;
+    color: #fff;
+}
+
+tbody {
+    background-color: #e4f0f5;
+}
+
+caption {
+    padding: 10px;
+    caption-side: bottom;
+}
+
+table {
+    border-collapse: collapse;
+    border: 2px solid rgb(200, 200, 200);
+    letter-spacing: 1px;
+    font-family: sans-serif;
+    font-size: .8rem;
+}
+
+td,
+th {
+    border: 1px solid rgb(190, 190, 190);
+    padding: 5px 10px;
+}
+
+td {
+    text-align: center;
+}
+  </style>
+</head>
+<body>
+
+    <p>Nom :<input type="text" id="nomFormulaire"> </p>
+    <p>Volume :<input type="range" min="1" max="100" id="volumeFormulaire" onchange="afficherVolume()"><span id="volumeValue"></span></p>
+    <p>Degre :<input type="range" step="0.5" min="1" max="90" id="degreeFormulaire" onchange="afficherDegree()"><span id="degreeValue"></span></p>
+
+    <p>Date :<input type="datetime-local" id="dateFormulaire"></p>
+
+    <button onclick="validerFormulaire()">Envoyer</button>
+
+    <p>Mon quantite / heure :
+        <input type="range" min="0" step="0.1" max="1.5" id="monTaux" onchange="afficherTaux()">
+        <span id="monTauxValeur"></span>
+    </p>
+
+    <p id="date"></p>
+    <p id="volume"></p>
+    <p id="degree"></p>
+
+    <p id="heureDeFin"></p>
+
+
+ <script>
+
+    let boissons = [];
+
+    function afficherVolume() {
+        document.getElementById("volumeValue").innerText = document.getElementById("volumeFormulaire").value;
+
+    }
+
+    function afficherTaux() {
+        document.getElementById("monTauxValeur").innerText = document.getElementById("monTaux").value;
+
+    }
+    function afficherDegree() {
+        document.getElementById("degreeValue").innerText = document.getElementById("degreeFormulaire").value;
+
+    }
+    function validerFormulaire() {
+       let newBoisson = {};
+       newBoisson.nom = document.getElementById("nomFormulaire").value;
+       newBoisson.degree = document.getElementById("degreeFormulaire").value;
+       newBoisson.volume = document.getElementById("volumeFormulaire").value;
+       newBoisson.date = new Date(document.getElementById("dateFormulaire").value);
+
+        console.log(JSON.stringify(newBoisson));
+       // ...
+       boissons.push(newBoisson);
+       calculTaux();
+    }
+
+    // Ajouter des boissons OK
+    // Afficher dans un tableau OK 
+    // Calculer l'heure de sobriete
+    // heure du premier verre : taux
+    // tant que j'ai pas bu le dernier verre : ajoute une heure;
+    // Si j'ai bu un verre, j'ajoute le taux
+    // J'absorbe de l'alcool
+    // Quand j'ai plus de verre. J'ai mon taux.
+
+    function calculTaux() {
+     // Je bois un verre par heure entre 18h et 24;
+     let taux = 0;
+     
+     let dateDebut = ""; // Heure du premier verre
+     let dateFin = ""; // Heure du dernier verre
+     boissons.forEach(function(boisson) {
+         if (!dateDebut || boisson.date < dateDebut) {
+             dateDebut = new Date(boisson.date);
+         }
+         if (!dateFin || boisson.date > dateFin) {
+            dateFin = new Date(boisson.date);
+         }
+     })
+     let heureATaux0 = dateDebut.getHours();
+     let hour = dateDebut.getHours();
+     while(dateDebut.getTime() <= dateFin.getTime()) {
+         let heure = dateDebut.getHours();
+         boissons.forEach(function (boisson, index) {
+            if (boisson.date.getHours() == heure) {
+                let alcoolDansLaBoisson = boisson.degree * boisson.volume / 100;
+                taux = taux + alcoolDansLaBoisson;
+            }
+         })
+         taux = taux - 1.5;
+        if (taux < 0 ) {
+            taux = 0;
+            if (!heureATaux0){
+                heureATaux0 = heure + 1;
+            }
+        } else {
+            heureATaux0 = "";
+        }
+        dateDebut.setHours(hour++);
+     }
+
+     if (taux > 0) {
+         let nombreHeureADecuver = taux / 1.5;
+         dateFin.setHours(dateFin.getHours() + 1 + Math.ceil(nombreHeureADecuver));
+         document.getElementById("heureDeFin").innerText = dateFin;
+     } else {
+        document.getElementById("heureDeFin").innerText = heureATaux0;
+     }
+
+    }    
+
+    // Sauvegarder / Recuperer les boissons dans chrome
+
+ </script>
+</body>
+
+</html>
