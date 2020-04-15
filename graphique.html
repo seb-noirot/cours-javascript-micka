@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            canvas {
+                width: 800px !important;
+                height: 600px !important;
+            }
+            h1 {
+                color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Mon premier graphique</h1>
+        <button onclick="boireUnVerre()">Boire un verre</button>
+        <canvas id="barChart" width="400" height="400"></canvas>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
+        <script>
+            let mesBoissons = [];
+
+            let ctxBarChart = document.getElementById('barChart').getContext('2d');
+            let barChart = new Chart(ctxBarChart, {
+                type: 'bar',
+                data: {
+                    labels: ["Janvi"],
+                    datasets: [{
+                        label: "Volume d'alcool",
+                        data: [12, 13],
+                        backgroundColor: []
+                    },
+                    {
+                        label: "Degrees",
+                        data: [],
+                        backgroundColor: []
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+
+            function boireUnVerre(){
+                let heure = prompt("Heure?", "12h");
+                let volume = prompt("Volume?", "50");
+                let alcool = prompt("Alcool", "5");
+                
+                mesBoissons.push({
+                    heure : heure,
+                    volume : volume,
+                    alcool : alcool
+                });
+
+                // chart.data.labels.push(label);
+                let color = "green";
+                let taux = Number(volume) * Number(alcool);
+                if (taux > 100) {
+                    color = "red";
+                } else if (taux > 50) {
+                    color = "orange";
+                } else {
+                    color = "green";
+                }
+                barChart.data.labels.push(heure);
+                barChart.data.datasets[0].data.push(Number(volume));
+                barChart.data.datasets[0].backgroundColor.push(color);
+                barChart.data.datasets[1].data.push(Number(alcool));
+                barChart.data.datasets[1].backgroundColor.push(color);
+
+                barChart.update();
+            }
+	
+</script>
+    </body>
+</html>
