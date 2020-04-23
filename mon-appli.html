@@ -34,6 +34,10 @@ th {
 td {
     text-align: center;
 }
+canvas {
+                width: 800px !important;
+                height: 600px !important;
+            }
   </style>
 </head>
 <body>
@@ -57,10 +61,33 @@ td {
 
     <p id="heureDeFin"></p>
 
-
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
  <script>
 
     let boissons = [];
+    let ctx = document.getElementById('myChart').getContext('2d');
+        
+    let myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [{
+                label: "Taux d'alcool",
+                data: [],
+                backgroundColor: []
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
 
     function afficherVolume() {
         document.getElementById("volumeValue").innerText = document.getElementById("volumeFormulaire").value;
@@ -98,6 +125,10 @@ td {
     // Quand j'ai plus de verre. J'ai mon taux.
 
     function calculTaux() {
+
+    myChart.data.labels = [];
+    myChart.data.datasets[0].data = [];
+    myChart.data.datasets[0].backgroundColor = [];
      // Je bois un verre par heure entre 18h et 24;
      let taux = 0;
      
@@ -130,18 +161,51 @@ td {
         } else {
             heureATaux0 = "";
         }
+
+        let color = "green";
+        if (taux > 5) {
+            color = "red";
+        } else if (taux > 1.5) {
+            color = "orange";
+        } else {
+            color = "green";
+        }
+        myChart.data.labels.push(heure);
+        myChart.data.datasets[0].data.push(taux);
+        myChart.data.datasets[0].backgroundColor.push(color);
+
         dateDebut.setHours(hour++);
      }
 
+     let heureDernierVerre = dateFin.getHours();
      if (taux > 0) {
-         let nombreHeureADecuver = taux / 1.5;
-         dateFin.setHours(dateFin.getHours() + 1 + Math.ceil(nombreHeureADecuver));
+         let nombreHeureADecuver = Math.ceil(taux / 1.5);
+         for (let heure = 1; heure <= nombreHeureADecuver; heure++) {
+            dateFin.setHours(heureDernierVerre + heure);
+            taux = taux - 1.5;
+            if ( taux < 0) {
+                taux = 0;
+            }
+            let color = "green";
+
+            if (taux > 5) {
+                color = "red";
+            } else if (taux > 1.5) {
+                color = "orange";
+            } else {
+                color = "green";
+            }
+            myChart.data.labels.push(dateFin.getHours());
+            myChart.data.datasets[0].data.push(taux);
+            myChart.data.datasets[0].backgroundColor.push(color);
+         }
          document.getElementById("heureDeFin").innerText = dateFin;
      } else {
         document.getElementById("heureDeFin").innerText = heureATaux0;
      }
 
-    }    
+     myChart.update();
+    }
 
     // Sauvegarder / Recuperer les boissons dans chrome
 
